@@ -1,7 +1,7 @@
 var nodeResolve = require('rollup-plugin-node-resolve');
 var nodePath = require("path");
 
-var rxjsEs6Dir = nodePath.resolve(__dirname + "/../rxjs-es6") + "/";
+var rxjsEs6Dir = nodePath.resolve(__dirname + "/../libs/rxjs/rxjs-es6") + "/";
 
 class RollupNG2 {
   resolveId(id, from) {

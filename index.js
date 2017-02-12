@@ -16,4 +16,7 @@ api.nope = api.utils.nope;
 api.prodServer = require('./servers/express-http-server.prod.js');
 api.devServer = require('./servers/express-http-server.dev.js');
 
+api.libs = {};
+api.libs.rxjs = require('./libs/rxjs/build.js');
+
 module.exports = api;

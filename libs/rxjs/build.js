@@ -6,27 +6,28 @@ var resolve = require('browser-resolve');
 var nodePath = require('path');
 var del = require('del');
 
-var compilation = require('../build-scripts/compilation.js');
-const rxjsEsDir = nodePath.resolve(__dirname +  "/../rxjs-es6");
-var pathTools = require('../build-scripts/path-tools.js');
-var bundling = require('../build-scripts/bundling.js');
+var compilation = require('../../build-scripts/compilation.js');
+const rxjsEsDir = nodePath.resolve(__dirname +  "/rxjs-es6");
+var pathTools = require('../../build-scripts/path-tools.js');
+var bundling = require('../../build-scripts/bundling.js');
 
 var build = {};
 
-build.rxjsToEs = function () {
+build.compileToEs6 = function () {
     let rxjsMainFilePath = require.resolve("rxjs/Rx");
     let rxjsDir = nodePath.dirname(rxjsMainFilePath);
     let rxjsSrcDir = nodePath.join(rxjsDir, "src");
     let config = require.resolve("./tsconfig.rxjs-to-es6.json");
 
     return streamQueue({ objectMode: true },
-        () => compilation.compileTypescript(config, rxjsEsDir)
+        () => compilation.compileTypescript(config, rxjsEsDir, {
+            src: nodePath.join(rxjsSrcDir, "**", "*.ts"), verbose: true
+        })
     );
 }
 
-build.rxjsBundle = function () {
-    // Make list of all rxjs modules
-    var packagesMap = {};
+build.getImportModules = function (vars, options) {
+    let packages = [];
     var resolvedRxjsEsDir = nodePath.resolve(rxjsEsDir);
     pathTools.walkFilesSync(rxjsEsDir, filePath => {
         // Skip MicsJSDoc due to errors
@@ -37,17 +38,10 @@ build.rxjsBundle = function () {
                 .replace(resolvedRxjsEsDir, 'rxjs')
                 .replace('.js', '')
             );
-            packagesMap[packageName] = packageName;
+            packages.push(packageName);
         }
     });
-
-    // Bundle it to the one file
-    var destDir = nodePath.resolve(__dirname + "/..");
-    var bundleName = "rxjs.js";
-    var tempDir = nodePath.resolve(__dirname + "../temp");
-    var bundle = bundling.rollupPackages(bundleName, packagesMap, { format: "cjs" },
-        { destDir: destDir, cache: false, uglify: false, tempDir: tempDir });
-    return bundle.stream;
+    return { name: "rxjs", modules: packages };
 }
 
 module.exports = build;

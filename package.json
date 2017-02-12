@@ -1,36 +1,80 @@
 {
-  "name": "angular-gulp-starter-api",
-  "version": "1.0.0-alha.1",
-  "description": "Tools for https://github.com/PFight/angular-gulp-starter-api",
-  "main": "index.js",
-  "scripts": {
-    "postinstall" : "gulp rxjs"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PFight/angular-gulp-starter-api.git"
-  },
-  "keywords": [
-    "angular",
-    "gulp",
-    "starter",
-    "seed",
-    "rollup",
-    "rxjs",
-    "systemjs",
-    "aot",
-    "ngc",
-    "scss",
-    "prod",
-    "dev",
-    "exress"
+  "_args": [
+    [
+      {
+        "raw": "angular-gulp-starter-api",
+        "scope": null,
+        "escapedName": "angular-gulp-starter-api",
+        "name": "angular-gulp-starter-api",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Main\\Work\\angular-gulp-starter"
+    ]
   ],
-  "author": "Bogatyrev Pavel",
-  "license": "MIT",
+  "_from": "angular-gulp-starter-api@latest",
+  "_id": "angular-gulp-starter-api@1.0.0-alha.0",
+  "_inCache": true,
+  "_location": "/angular-gulp-starter-api",
+  "_nodeVersion": "6.9.1",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/angular-gulp-starter-api-1.0.0-alha.0.tgz_1486899813763_0.16000275569967926"
+  },
+  "_npmUser": {
+    "name": "pfight",
+    "email": "Bogatyrev.P.U@gmail.com"
+  },
+  "_npmVersion": "3.10.8",
+  "_phantomChildren": {
+    "async-foreach": "0.1.3",
+    "chalk": "1.1.3",
+    "cross-spawn": "3.0.1",
+    "get-stdin": "4.0.1",
+    "glob": "7.1.1",
+    "gulp-util": "3.0.8",
+    "in-publish": "2.0.0",
+    "lodash.assign": "4.2.0",
+    "lodash.clonedeep": "4.5.0",
+    "lodash.mergewith": "4.6.0",
+    "meow": "3.7.0",
+    "minimatch": "3.0.3",
+    "mkdirp": "0.5.1",
+    "nan": "2.5.0",
+    "node-gyp": "3.5.0",
+    "npmlog": "4.0.2",
+    "request": "2.79.0",
+    "sass-graph": "2.1.2",
+    "stdout-stream": "1.4.0",
+    "symbol-observable": "1.0.4",
+    "through2": "2.0.3",
+    "vinyl-sourcemaps-apply": "0.2.1"
+  },
+  "_requested": {
+    "raw": "angular-gulp-starter-api",
+    "scope": null,
+    "escapedName": "angular-gulp-starter-api",
+    "name": "angular-gulp-starter-api",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular-gulp-starter-api/-/angular-gulp-starter-api-1.0.0-alha.0.tgz",
+  "_shasum": "6db8dc7822a4bd44e19c2c456339b9c4e20fc533",
+  "_shrinkwrap": null,
+  "_spec": "angular-gulp-starter-api",
+  "_where": "C:\\Main\\Work\\angular-gulp-starter",
+  "author": {
+    "name": "Bogatyrev Pavel"
+  },
   "bugs": {
     "url": "https://github.com/PFight/angular-gulp-starter-api/issues"
   },
-  "homepage": "https://github.com/PFight/angular-gulp-starter-api#readme",
   "dependencies": {
     "@angular/common": "^2.1.0",
     "@angular/compiler": "^2.1.0",
@@ -84,5 +128,48 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-paths": "^2.1.0",
     "vinyl-source-stream": "^1.1.0"
-  }
+  },
+  "description": "Scripts for https://github.com/PFight/angular-gulp-starter-api\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[C\u001b[C\u001b",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "6db8dc7822a4bd44e19c2c456339b9c4e20fc533",
+    "tarball": "https://registry.npmjs.org/angular-gulp-starter-api/-/angular-gulp-starter-api-1.0.0-alha.0.tgz"
+  },
+  "gitHead": "b46d45957e2f70ead484bd67dfdc4f905487e750",
+  "homepage": "https://github.com/PFight/angular-gulp-starter-api#readme",
+  "keywords": [
+    "angular",
+    "gulp",
+    "starter",
+    "seed",
+    "rollup",
+    "rxjs",
+    "systemjs",
+    "aot",
+    "ngc",
+    "scss",
+    "prod",
+    "dev",
+    "exress"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "pfight",
+      "email": "Bogatyrev.P.U@gmail.com"
+    }
+  ],
+  "name": "angular-gulp-starter-api",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PFight/angular-gulp-starter-api.git"
+  },
+  "scripts": {
+    "postinstall": "gulp rxjs"
+  },
+  "version": "1.0.0-alha.0"
 }

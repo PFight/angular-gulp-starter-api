@@ -53,7 +53,7 @@ bundling.rollupPackages = function (name, packagesMap, rollupOptions, options) {
                 options.destDir, options.uglify, !options.silent);
             return rolling.stream;
         }
-        return utils.async(createRollupEntry, makeRollup);
+        return utils.sync(createRollupEntry, makeRollup);
     });
 }
 
@@ -96,7 +96,10 @@ function bundleSingleFileHelper(name, options, bundleFunc) {
 
 /** Generates .ts file, that imports all specified modules */
 function generateRollupEntry(packagesMap, name, log, tempDir) {
-    var rollupEntryName = (tempDir  || "temp/") + name + "-rollup-entry.generated.js";
+    var rollupEntryName = nodePath.join(
+        (tempDir || "temp"),
+        (name + "-rollup-entry.generated.js")
+    );
     var pakages = Object.keys(packagesMap);
     var content = "";
     for (var pkgNum = 0; pkgNum < pakages.length; pkgNum++) {

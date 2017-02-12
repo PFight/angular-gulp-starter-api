@@ -5,10 +5,8 @@ var gulp = require("gulp");
 var es = require("event-stream");
 var streamQueue = require("streamqueue");
 
-var buildRxjs = require("./package-scripts/build-rxjs");
+var rxjs = require("./libs/rxjs/build.js");
 
 gulp.task("rxjs", function () {
-    return streamQueue({ objectMode: true },
-        () => buildRxjs.rxjsToEs(),
-        () => buildRxjs.rxjsBundle());
+    return rxjs.compileToEs6();
 });

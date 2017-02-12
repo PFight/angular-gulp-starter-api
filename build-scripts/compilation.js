@@ -15,11 +15,16 @@ compilation.compileTypescript = function (tsconfigFile, destDir, options) {
     options = options || {};
     !options.silent && gutil.log("Compiling typescript " + colors.magenta(tsconfigFile));
     var tsProject = ts.createProject(tsconfigFile);
-    return tsProject.src()
+    return (options.src ? gulp.src(options.src) : tsProject.src())
+        .pipe(gulpif(options.verbose, print(file => {
+            gutil.log(colors.gray("[tsc]") + " <-- " + file);
+        })))
         .pipe(tsProject())
         .js
         .pipe(gulp.dest(destDir))
-        .pipe(gulpif(options.verbose, print()))
+        .pipe(gulpif(options.verbose, print(file => {
+            gutil.log(colors.gray("[tsc]") + " --> " + file);
+        })))
         .on('end', () => !options.silent &&
             gutil.log(gutil.colors.gray('[' + tsconfigFile + '] --> ') +
             "compilation of typescript done (dest dir "

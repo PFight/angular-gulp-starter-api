@@ -21,6 +21,9 @@ pathTools.resolvePackage = function (packageMap, packageName, packagePath) {
     packageMap[packageName] = pathTools.resolvePackagePath(packagePath || packageName);
 }
 
+pathTools.moduleNameToFileName = function (moduleName) {
+    return pathTools.normalizePathSeparators(moduleName).split('/').join('-');
+}
 
 /** List all files in a directory recursively in a synchronous fashion */
 pathTools.walkFilesSync = function (dir, visitor) {
