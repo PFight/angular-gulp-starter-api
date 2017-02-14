@@ -5,6 +5,7 @@ var path = require('path');
 var resolve = require('browser-resolve');
 var gutil = require('gulp-util');
 var nodePath = require('path');
+var inject = require('gulp-inject');
 
 var bundling = require('./bundling.js');
 var pathTools = require('./path-tools.js');
@@ -13,13 +14,13 @@ var utils = require('./utils.js');
 
 var build = {};
 
-build.processStyles = function (vars, options) {
+build.compileScss = function (vars, options) {
     utils.ensureVariableSet(vars, "APP_DIR");
 
     return compilation.compileSass(vars.APP_DIR);
 }
 
-build.processScripts = function (vars, options) {
+build.compileTypescript = function (vars, options) {
     utils.ensureVariableSet(vars, "APP_DIR");
     utils.ensureVariableSet(vars, "TSCONFIG");
 
@@ -59,15 +60,16 @@ build.prepareImportModules = function (vars, options) {
     return bundle.stream;
 }
 
-build.prepareIncludeScripts = function (vars, options) {
-    utils.ensureVariableSet(vars, "INCLUDE_SCRIPTS");
-    utils.ensureVariableSet(vars, "LIBS_DIR");
-    utils.ensureVariableSet(vars, "INCLUDE_SCRIPTS_BUNDLE_NAME");
+build.injectScripts = function (vars, options) {
+    utils.ensureVariableSet(vars, "INJECT_SCRIPTS_DEV");
+    utils.ensureVariableSet(vars, "INDEX_HTML");
 
-    var bundle = bundling.concatBundle(
-        vars.INCLUDE_SCRIPTS_BUNDLE_NAME, vars.INCLUDE_SCRIPTS,
-        { destDir: vars.LIBS_DIR, uglify: false, cache: true, verbose: true });
-    return bundle.stream;
+    var scripts = vars.INJECT_SCRIPTS_DEV || [];
+    var scriptSources = gulp.src(scripts, { read: false });
+
+    return gulp.src(vars.INDEX_HTML)
+        .pipe(inject(scriptSources))
+        .pipe(gulp.dest(nodePath.dirname(vars.INDEX_HTML)));
 }
 
 build.clean = function (vars, options) {

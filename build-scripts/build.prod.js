@@ -6,6 +6,7 @@ var del = require("del");
 var vinylPaths = require('vinyl-paths');
 var replace = require('gulp-replace');
 var print = require('gulp-print');
+var inject = require('gulp-inject');
 
 var bundling = require('./bundling.js');
 var pathTools = require('./path-tools.js');
@@ -14,13 +15,15 @@ var utils = require('./utils.js');
 
 var build = {};
 
-build.processStyles = function (vars, options) {
+build.compileScss = function (vars, options) {
     utils.ensureVariableSet(vars, "APP_DIR");
 
     return compilation.compileSass(vars.APP_DIR);
 }
 
-build.processScripts = function (vars, options) {
+build.moduleFixScriptPath = nodePath.resolve('./module-fix.js');
+
+build.compileTypescript = function (vars, options) {
     utils.ensureVariableSet(vars, "APP_PROD");
     utils.ensureVariableSet(vars, "PROD_TSCONFIG");
 
@@ -33,24 +36,17 @@ build.processAngularTemplates = function (vars, options) {
     return compilation.compileAngularTemplates(vars.NGC_TSCONFIG);
 }
 
-
 build.makeCommonBundle = function (vars, options) {
+    utils.ensureVariableSet(vars, "COMMON_BUNDLE_SCRIPTS");
+    utils.ensureVariableSet(vars, "INDEX_HTML");
     utils.ensureVariableSet(vars, "COMMON_BUNDLE_NAME");
-    utils.ensureVariableSet(vars, "DIST_DIR");
     utils.ensureVariableSet(vars, "APP_DIR_NAME");
+    utils.ensureVariableSet(vars, "DIST_DIR");
 
+    var scripts = vars.COMMON_BUNDLE_SCRIPTS || [];
 
-    var packages = [
-        pathTools.resolvePackagePath("zone.js"),
-        pathTools.resolvePackagePath("reflect-metadata"),
-        pathTools.resolvePackagePath("es6-shim"),
-        pathTools.resolvePackagePath("tslib")
-    ];
-    if (vars.extraPackages) {
-        packages = packages.concat(vars.extraPackages);
-    }
     var destDir = nodePath.join(vars.DIST_DIR, vars.APP_DIR_NAME);
-    var bundle = bundling.concatBundle(vars.COMMON_BUNDLE_NAME, packages,
+    var bundle = bundling.concatBundle(vars.COMMON_BUNDLE_NAME, scripts,
         { destDir: destDir, uglify: true, cache: true, verbose: true });
     return bundle.stream;
 };
@@ -69,26 +65,36 @@ build.makeAppBundle = function (vars, options) {
     return bundle.stream;
 };
 
-build.publishToDist = function(vars, options) {
+build.copyAssetsToDist = function (vars, options) {
     utils.ensureVariableSet(vars, "DIST_DIR");
     utils.ensureVariableSet(vars, "ASSETS_DIR");
-    utils.ensureVariableSet(vars, "INDEX_HTML");
-    
+
     let assetsDest = nodePath.join(vars.DIST_DIR,
         nodePath.relative(nodePath.dirname(vars.INDEX_HTML), vars.ASSETS_DIR));
-    var publishAssets = () => gulp.src(vars.ASSETS_DIR + "/**/*.*")
+    return gulp.src(vars.ASSETS_DIR + "/**/*.*")
       .pipe(gulp.dest(assetsDest))
       .on("end", () => gutil.log("Published " + vars.ASSETS_DIR + " --> " + assetsDest));
+}
 
-    var publishIndexHtml = () => gulp.src(vars.INDEX_HTML)
+
+build.processIndexHtml = function(vars, options) {
+    utils.ensureVariableSet(vars, "DIST_DIR");
+    utils.ensureVariableSet(vars, "INDEX_HTML");
+    utils.ensureVariableSet(vars, "INJECT_SCRIPTS_PROD");
+    utils.ensureVariableSet(vars, "INDEX_HTML");
+
+    var scripts = vars.INJECT_SCRIPTS_PROD || [];
+    var scriptSources = gulp.src(scripts, { read: false });
+
+    return gulp.src(vars.INDEX_HTML)
+        .pipe(gulp.dest(vars.DIST_DIR))
         .pipe(replace('<!-- prod --', '<!-- prod -->'))
         .pipe(replace('-- end-prod -->', '<!-- end-prod -->'))
         .pipe(replace('<!-- dev -->', '<!-- dev --'))
         .pipe(replace('<!-- end-dev -->', '-- end-dev -->'))
+        .pipe(inject(scriptSources, { relative: true }))
         .pipe(gulp.dest(vars.DIST_DIR))
-        .pipe(print(file => { gutil.log('Published --> ' + file)}));
-
-    return utils.async(publishAssets, publishIndexHtml);
+        .pipe(print(file => { gutil.log('Published --> ' + file) }));
 }
 
 build.clean = function (vars, options) {
